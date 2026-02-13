@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Memory Test ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #ffeef2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+        h1 { color: #ff4d6d; font-size: 1.5rem; margin-bottom: 10px; }
+        p { color: #555; font-size: 1rem; line-height: 1.4; }
+        input {
+            width: 100%; padding: 12px; margin-top: 15px;
+            border: 2px solid #ffccd5; border-radius: 10px;
+            font-family: 'Kanit'; text-align: center; outline: none;
+        }
+        .btn {
+            background: #ff4d6d; color: white; border: none;
+            padding: 12px 28px; border-radius: 50px;
+            font-size: 1.1rem; font-weight: 600; cursor: pointer;
+            transition: 0.3s; margin-top: 20px; width: 100%;
+        }
+
+        /* Layout ปุ่ม Step 4 */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+            min-height: 120px;
+        }
+
+        .btn-main {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .btn-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
+        }
+
+        #btn-no {
+            background: #f0f0f0;
+            color: #888;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.1s ease-out;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .hidden { display: none; }
+        .heart-btn { font-size: 5rem; cursor: pointer; display: inline-block; animation: beat 0.8s infinite; user-select: none; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .error-msg { color: #ff4d6d; font-size: 0.85rem; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <audio id="audio1" loop><source src="music1.mp3" type="audio/mpeg"></audio>
+    <audio id="audio2" loop><source src="music2.mp3" type="audio/mpeg"></audio>
+
+    <div id="step0" class="container">
+        <div style="font-size: 3.5rem;">🎒</div>
+        <h1>จำเรื่องของเราได้มั้ยนะ?</h1>
+        <p>แฟนพี่เก่งอยู่แล้ว ตอบคำถามให้ชื่นใจหน่อยค่ะ ❤️</p>
+        <button class="btn" onclick="startSurprise()">เริ่มเลยคะ ❤️</button>
+    </div>
+
+    <div id="step1" class="container hidden">
+        <h1>คำถามที่ 1 📅</h1>
+        <p>เราเจอกันครั้งแรกวันที่เท่าไรคะ?</p>
+        <input type="text" id="q1" placeholder="เช่น 08/11/2025">
+        <p id="err1" class="error-msg hidden">วันที่ผิด! ลองนึกดีๆ สิ</p>
+        <button class="btn" onclick="checkQ1()">ยืนยันคำตอบ</button>
+    </div>
+
+    <div id="step2" class="container hidden">
+        <h1>คำถามที่ 2 ❤️</h1>
+        <p>วันที่เราเป็นแฟนกันคือวันที่เท่าไร?</p>
+        <input type="text" id="q2" placeholder="เช่น 08/12/2025">
+        <p id="err2" class="error-msg hidden">จำไม่ได้เหรออออ เสียใจจังเลยค่า!</p>
+        <button class="btn" onclick="checkQ2()">ยืนยันคำตอบ</button>
+    </div>
+
+    <div id="step3" class="container hidden">
+        <h1>คำถามที่ 3 ⏳</h1>
+        <p>สรุปเราคบกันมากี่เดือนแล้ว?</p>
+        <input type="number" id="q3" placeholder="ตอบเป็นตัวเลขนะคะ">
+        <p id="err3" class="error-msg hidden"></p>
+        <button class="btn" onclick="checkQ3()">ยืนยันคำตอบ</button>
+    </div>
+
+    <div id="step4" class="container hidden">
+        <div style="font-size: 3.5rem; margin-bottom: 10px;">😜</div>
+        <h1>โอ้ว้าว... จำแม่นเหมือนมีสมุดจด!</h1>
+        <p>คำถามสำคัญ <br>รักพี่มั้ยคะ?</p>
+        <div class="button-group">
+            <button class="btn-main" onclick="nextStep(5)">รักที่สุดในโลก! ❤️</button>
+            <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">ไม่รักหรอกก</button>
+        </div>
+    </div>
+
+    <div id="step5" class="container hidden">
+        <h1>สุดท้ายแล้ว! 🤝</h1>
+        <p>กดหัวใจให้ครบ 8 ครั้งก่อน <br>พี่มีอะไรจะบอกค่ะ</p>
+        <div class="heart-btn" onclick="countClicks()">❤️</div>
+        <br>
+        <span style="background:#ff4d6d; color:#fff; padding:5px 20px; border-radius:20px; font-weight:bold; font-size: 1.2rem;" id="count-text">0 / 8</span>
+    </div>
+
+    <div id="step6" class="container hidden">
+        <div style="font-size: 5rem; animation: beat 1s infinite;">💖</div>
+        <h1 style="font-size: 2.2rem; margin-bottom: 0;">Always you.</h1>
+        <h2 style="color: #ff4d6d; margin-top: 0;">My Valentine ❤️</h2>
+        
+        <p>ขอบคุณที่อิ๊กเดินเข้ามา ขอบคุณที่เลือกพี่ <br> ขอบคุณที่เข้ามาเป็นความสุขในชีวิต  </p>
+        <p style="margin-top: 15px; font-weight: 600; color: #444; line-height: 1.6;">
+            พี่เป็นคนโชคดีมากที่มีอิ๊กอยู่ข้างๆ พี่จะดูแลและรักษาความรักของเราให้ดี <br>
+            <span style="color: #ff4d6d; font-size: 1.3rem; display: block; margin-top: 10px; font-weight: 600;">
+               รอวันงานบัวลอยของเรานะคะ
+            </span>
+        </p>
+    </div>
+
+    <script>
+        // คำตอบที่ถูกต้อง
+        const ANSWERS = {
+            dateMet: "08/11/2025", 
+            dateFan: "08/12/2025",
+            months: 3
+        };
+
+        // ลิสต์คำกวนๆ บนปุ่มหนี
+        const noTexts = [
+            "ไม่รักจริงๆเหรอคะ", "เศร้าๆค่ะ แฟนไม่รัก", "รักพี่เถอะค้า", "ใจร้ายจัง!", "แกล้งพี่ป่ะเนี่ย"
+        ];
+
+        let clickCount = 0;
+        const s1 = document.getElementById('audio1');
+        const s2 = document.getElementById('audio2');
+
+        function startSurprise() { s1.play(); nextStep(1); }
+        
+        function nextStep(step) {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            const target = document.getElementById('step' + step);
+            if (target) target.classList.remove('hidden');
+        }
+
+        function checkQ1() {
+            if(document.getElementById('q1').value === ANSWERS.dateMet) nextStep(2);
+            else document.getElementById('err1').classList.remove('hidden');
+        }
+
+        function checkQ2() {
+            if(document.getElementById('q2').value === ANSWERS.dateFan) nextStep(3);
+            else document.getElementById('err2').classList.remove('hidden');
+        }
+
+        function checkQ3() {
+            const ans = parseInt(document.getElementById('q3').value);
+            const err = document.getElementById('err3');
+            if(ans === ANSWERS.months) nextStep(4);
+            else if(ans === 1) { 
+                err.innerText = "ใช่เหรอ? แน่เหรอ? ลองใหม่นะคะ!"; 
+                err.classList.remove('hidden'); 
+            } else { 
+                err.innerText = "เลขผิดหรือเปล่า! ลองนับดีๆ ใหม่นะคะ"; 
+                err.classList.remove('hidden'); 
+            }
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('btn-no');
+            const x = Math.max(10, Math.random() * (window.innerWidth - btn.clientWidth - 20));
+            const y = Math.max(10, Math.random() * (window.innerHeight - btn.clientHeight - 20));
+            
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+
+            const currentText = btn.innerText;
+            let newText = noTexts[Math.floor(Math.random() * noTexts.length)];
+            while(newText === currentText) {
+                newText = noTexts[Math.floor(Math.random() * noTexts.length)];
+            }
+            btn.innerText = newText;
+        }
+
+        function countClicks() {
+            clickCount++;
+            document.getElementById('count-text').innerText = `${clickCount} / 8`;
+            if (clickCount >= 8) {
+                s1.pause(); 
+                s1.currentTime = 0;
+                s2.play(); 
+                nextStep(6);
+            }
+        }
+    </script>
+</body>
+</html>
